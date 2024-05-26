@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +38,7 @@ public class TestScene extends Application {
     Param condition = null;
     String name_of_game = "";
 
-    public Param main_param = Color.YELLOW;
+    Param main_param = Color.YELLOW;
     public int ID = 110;
 
     List<Figure> rightAnswers;
