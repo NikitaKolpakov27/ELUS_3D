@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
@@ -18,11 +19,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -116,8 +119,8 @@ public class TestScene extends Application {
 
     public ArrayList<Shape3D> getChoices(List<Figure> threes, Param currObj) {
 
-        Sphere sphere = null;
-        Box box = null;
+        Sphere sphere;
+        Box box;
         ArrayList<Shape3D> figs = new ArrayList<>();
 
         int x = 150;
@@ -203,23 +206,25 @@ public class TestScene extends Application {
         camera.setTranslateZ(300);
 
         // Add text
-        TextFlow textFlow = new TextFlow();
-        textFlow.setLayoutX(400);
-        textFlow.setLayoutY(20);
-        Text text = new Text("Текущая последовательность:");
-        text.setFont(Font.font("Helvetica", 50));
-        textFlow.getChildren().add(text);
+        Label label_elus = new Label("ЭЛУС");
+        label_elus.setLayoutX(600);
+        label_elus.setLayoutY(20);
+        label_elus.setFont(Font.font("Helvetica", 50));
+        label_elus.setTextFill(javafx.scene.paint.Color.RED);
+        label_elus.setAlignment(Pos.CENTER);
 
-        // Add text
-        TextFlow chooseFigures = new TextFlow();
-        chooseFigures.setLayoutX(400);
-        chooseFigures.setLayoutY(200);
-        Text chooseFiguresText = new Text("Выберете одну фигуру:");
-        chooseFiguresText.setFont(Font.font("Helvetica", 50));
-        chooseFigures.getChildren().add(chooseFiguresText);
+        Label label_seq = new Label("Текущая последовательность");
+        label_seq.setLayoutX(400);
+        label_seq.setLayoutY(60);
+        label_seq.setFont(Font.font("Helvetica", 40));
+
+        Label label_choose = new Label("Выберете одну фигуру:");
+        label_choose.setLayoutX(450);
+        label_choose.setLayoutY(250);
+        label_choose.setFont(Font.font("Helvetica", 40));
 
         // Начальные фигуры
-        root.getChildren().addAll(textFlow, chooseFigures);
+        root.getChildren().addAll(label_elus, label_seq, label_choose);
         for (Shape3D shape : shapes) {
             root.getChildren().add(shape);
         }
@@ -231,10 +236,10 @@ public class TestScene extends Application {
         }
 
         // Add 1st button
-        Button decision1 = new Button("Сделать выбор 1");
-        decision1.setPrefSize(100, 100);
-        decision1.setLayoutX(300);
-        decision1.setLayoutY(500);
+        Button decision1 = new Button("1");
+        decision1.setPrefSize(50, 50);
+        decision1.setLayoutX(275);
+        decision1.setLayoutY(450);
         decision1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -253,10 +258,10 @@ public class TestScene extends Application {
         root.getChildren().add(decision1);
 
         // Add 2nd button
-        Button decision2 = new Button("Сделать выбор 2");
-        decision2.setPrefSize(100, 100);
-        decision2.setLayoutX(400);
-        decision2.setLayoutY(500);
+        Button decision2 = new Button("2");
+        decision2.setPrefSize(50, 50);
+        decision2.setLayoutX(385);
+        decision2.setLayoutY(450);
         decision2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -277,10 +282,10 @@ public class TestScene extends Application {
         root.getChildren().add(decision2);
 
         // Add 3rd button
-        Button decision3 = new Button("Сделать выбор 2");
-        decision3.setPrefSize(100, 100);
-        decision3.setLayoutX(500);
-        decision3.setLayoutY(500);
+        Button decision3 = new Button("3");
+        decision3.setPrefSize(50, 50);
+        decision3.setLayoutX(495);
+        decision3.setLayoutY(450);
         decision3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -307,7 +312,7 @@ public class TestScene extends Application {
         // Add the Scene to the Stage
         stage.setScene(scene);
         // Set the Title of the Stage
-        stage.setTitle("An Example with Predefined 3D Shapes");
+        stage.setTitle("ELUS Game");
         // Display the Stage
         stage.show();
     }
@@ -426,7 +431,7 @@ public class TestScene extends Application {
         System.out.println("curr equality: " + (condition != main_param));
         System.out.println("curr cond: " + condition);
         System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
-//        if (conditionFirstRoundNormal | conditionFirstRoundSpecial | conditionSecondRound_BigBlue) {
+
         if (conditionFirstRoundNormal) {
             System.out.println("Правильно" + "\n");
             points += 2;
