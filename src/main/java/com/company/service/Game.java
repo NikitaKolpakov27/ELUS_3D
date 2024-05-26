@@ -23,6 +23,14 @@ public class Game {
     public static final int ID_BLUE_CIRCLE = 2_0_2;  //  Если BLUE -> CIRCLE, YELLOW -> SQUARE
     public static final int ID_SQUARE_BIG = 2_0_3;   //  Если SQUARE -> BIG, CIRCLE -> SMALL
 
+    public static final List<Integer> FIRST_ROUND_GAME_TYPES = List.of(
+      ID_SAME_COLOR, ID_SAME_TYPE, ID_SAME_SIZE, ID_DIFF_COLOR, ID_DIFF_SIZE, ID_DIFF_TYPE
+    );
+
+    public static final List<Integer> SECOND_ROUND_GAME_TYPES = List.of(
+            ID_BIG_BLUE, ID_SMALL_BLUE, ID_BLUE_CIRCLE, ID_SQUARE_BIG
+    );
+
 
     public static final List<Figure> figures = List.of(
             new Figure(Color.BLUE, Size.BIG, Type.CIRCLE), new Figure(Color.BLUE, Size.BIG, Type.SQUARE),

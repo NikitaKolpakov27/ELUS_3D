@@ -10,6 +10,8 @@ module com.example.figure3d {
 //    requires org.kordamp.bootstrapfx.core;
 //    requires eu.hansolo.tilesfx;
     requires javafx.graphics;
+    requires java.management;
+    requires org.controlsfx.controls;
 
     opens com.example.figure3d to javafx.fxml;
     exports com.example.figure3d;

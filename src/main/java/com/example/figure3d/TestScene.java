@@ -29,7 +29,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 
+import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -437,7 +439,7 @@ public class TestScene extends Application {
         System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
         if (conditionFirstRoundNormal) {
-            System.out.println("Правильно" + "\n");
+            Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();
             points += 2;
             threes.add(chosenFigure);
 
@@ -457,7 +459,7 @@ public class TestScene extends Application {
             return true;
 
         } else if (conditionFirstRoundSpecial) {
-            System.out.println("Правильно" + "\n");
+            Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();
             points += 2;
             threes.add(chosenFigure);
 
@@ -469,7 +471,7 @@ public class TestScene extends Application {
 
         } else {
             attempts--;
-            System.out.println("Неправильно. У вас осталось " + attempts + " попыток" + "\n");
+            Notifications.create().title("Неправильно!").text("У вас осталось " + attempts + " попыток").showWarning();
 
             if (attempts == 0) {
                 Tools.dialogWindow(name_of_game, points, "Игра окончена! Вы дисквалифицированы!",
