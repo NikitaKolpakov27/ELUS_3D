@@ -8,13 +8,16 @@ import com.company.service.Game;
 import com.company.service.Param;
 import com.company.service.Tools;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
@@ -26,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -236,9 +240,13 @@ public class TestScene extends Application {
             public void handle(ActionEvent e) {
                 currentFigure[0] = choices.get(0);
 
-                if (playRound(currentFigure[0])) {
-                    Tools.draw_figure(choices.get(0), root, shapes);
-                    updateFigures();
+                try {
+                    if (playRound(currentFigure[0])) {
+                        Tools.draw_figure(choices.get(0), root, shapes);
+                        updateFigures();
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -255,9 +263,13 @@ public class TestScene extends Application {
 
                 currentFigure[0] = choices.get(1);
 
-                if (playRound(currentFigure[0])) {
-                    Tools.draw_figure(choices.get(1), root, shapes);
-                    updateFigures();
+                try {
+                    if (playRound(currentFigure[0])) {
+                        Tools.draw_figure(choices.get(1), root, shapes);
+                        updateFigures();
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
 
             }
@@ -275,9 +287,13 @@ public class TestScene extends Application {
                 currentFigure[0] = choices.get(2);
 
 
-                if (playRound(currentFigure[0])) {
-                    Tools.draw_figure(choices.get(2), root, shapes);
-                    updateFigures();
+                try {
+                    if (playRound(currentFigure[0])) {
+                        Tools.draw_figure(choices.get(2), root, shapes);
+                        updateFigures();
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -384,7 +400,7 @@ public class TestScene extends Application {
     }
 
 
-    public boolean playRound(Figure chosenFigure) {
+    public boolean playRound(Figure chosenFigure) throws Exception {
 
         getCondition(chosenFigure);
 
@@ -430,23 +446,39 @@ public class TestScene extends Application {
             threes.add(chosenFigure);
 
             if (threes.size() == 8) {
-                System.out.println("Поздравляем! Вы прошли первый тур! Условием было: " + name_of_game);
-                System.out.println("Набрано очков: " + points);
-            }
 
+                // Диалоговое окно
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("ELUS");
+                alert.setHeaderText("Поздравляем! Вы прошли первый тур! Условием было: " + name_of_game);
+                alert.setContentText("Набрано очков: " + points);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
+                    Platform.exit();
+                }
+            }
             return true;
+
         } else {
             attempts--;
             System.out.println("Неправильно. У вас осталось " + attempts + " попыток" + "\n");
-            points -= 1;
 
             if (attempts == 0) {
-                System.out.println("Игра окончена. Вы дисквалифицированы.");
-                System.out.println("Условием было: " + name_of_game);
-                System.out.println("Набрано очков: " + Math.round(points));
-            }
 
+                // Диалоговое окно
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ELUS");
+                alert.setHeaderText("Игра окончена. Вы дисквалифицированы. Условием было: " + name_of_game);
+                alert.setContentText("Набрано очков: " + points);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
+                    Platform.exit();
+                }
+            }
             return false;
+
         }
     }
 
