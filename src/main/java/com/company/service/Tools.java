@@ -4,7 +4,10 @@ import com.company.enums.Color;
 import com.company.enums.Size;
 import com.company.enums.Type;
 import com.company.model.Figure;
+import javafx.application.Platform;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
@@ -12,6 +15,7 @@ import javafx.scene.shape.Sphere;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -262,7 +266,6 @@ public class Tools {
         //Создание выбора (состоит из 1 правильного и 2-х неправильных вариантов)
         return List.of(rightAnswers.get(ran), wrongAnswers.get(ran_wr_1), wrongAnswers.get(ran_wr_2));
 
-
     }
 
     /*
@@ -322,19 +325,44 @@ public class Tools {
         }
     }
 
-    public static List<List<Figure>> makeAnswers_1st(Param currParam) {
-        Stream<Figure> currColorAnswers;
-        Stream<Figure> wrongColorAnswers;
+    public static List<List<Figure>> makeAnswers_1st(Param currParam, int id) {
+        Stream<Figure> currParamAnswers = null;
+        Stream<Figure> wrongParamAnswers = null;
 
         //Создание массивов нужного цвета ("правильных") и неправильного ("неверных")
-        currColorAnswers = figures.stream().filter(figure -> figure.getColor() == currParam);
-        wrongColorAnswers = figures.stream().filter(figure -> figure.getColor() != currParam);
+        if (id == 100) {
+            currParamAnswers = figures.stream().filter(figure -> figure.getColor() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getColor() != currParam);
+        } else if (id == 101) {
+            currParamAnswers = figures.stream().filter(figure -> figure.getSize() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getSize() != currParam);
+        } else if (id == 102) {
+            currParamAnswers = figures.stream().filter(figure -> figure.getType() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getType() != currParam);
+        } else if (id == 110 || id == 111 || id == 112) {
+            currParamAnswers = figures.stream();
+            wrongParamAnswers = figures.stream();
+        }
 
         //Перевод из Стримов в Листы
-        List<Figure> rightAnswers = currColorAnswers.toList();
-        List<Figure> wrongAnswers = wrongColorAnswers.toList();
+        List<Figure> rightAnswers = currParamAnswers.toList();
+        List<Figure> wrongAnswers = wrongParamAnswers.toList();
 
         List<List<Figure>> answers = List.of(rightAnswers, wrongAnswers);
         return answers;
+    }
+
+    // Диалоговое окно на выходе из приложения (выигрыш/проигрыш)
+    public static void dialogWindow(String name_of_game, int points, String text, Alert.AlertType alertType) {
+
+        Alert alert = new Alert(alertType);
+        alert.setTitle("ELUS");
+        alert.setHeaderText(text + " Условием было: " + name_of_game);
+        alert.setContentText("Набрано очков: " + points);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
+            Platform.exit();
+        }
     }
 }

@@ -36,7 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.company.service.Game.figures;
+import static com.company.service.Game.*;
 
 public class TestScene extends Application {
     public static int points = 0;
@@ -45,16 +45,14 @@ public class TestScene extends Application {
     Param condition = null;
     String name_of_game = "";
 
-    Param main_param = Color.YELLOW;
-    public int ID = 110;
+    Param main_param = Size.SMALL;
+    public int ID = 111;
 
     List<Figure> rightAnswers;
     List<Figure> wrongAnswers;
 
     //    ArrayList<Figure> threes = (ArrayList<Figure>) Tools.makeThrees_1st(Game.figures, main_param, 3);
-    ArrayList<Figure> threes = gameByColor_view((Color) main_param);
-
-    // Сделать нормальные ответы
+    ArrayList<Figure> threes = gameByColor_view(main_param);
 
     // Получение списка ответов для выбора (в определенном (нехорошем) порядке)
     List<Figure> raw_choices = Tools.getChoices(rightAnswers, wrongAnswers, threes, ID, main_param);
@@ -318,7 +316,7 @@ public class TestScene extends Application {
     }
 
     public void updateFigures() {
-        List<List<Figure>> answers = Tools.makeAnswers_1st(main_param);
+        List<List<Figure>> answers = Tools.makeAnswers_1st(main_param, ID);
 //        List<List<Figure>> answers = Tools.makeAnswers_2nd(threes, main_param);
         rightAnswers = answers.get(0);
         wrongAnswers = answers.get(1);
@@ -343,7 +341,13 @@ public class TestScene extends Application {
             root.getChildren().add(choice);
         }
 
-        main_param = threes.get(threes.size() - 1).getColor();
+        if (ID == ID_SAME_COLOR || ID == ID_DIFF_COLOR){
+            main_param = threes.get(threes.size() - 1).getColor();
+        } else if (ID == ID_SAME_SIZE || ID == ID_DIFF_SIZE) {
+            main_param = threes.get(threes.size() - 1).getSize();
+        } else if (ID == ID_SAME_TYPE || ID == ID_DIFF_TYPE) {
+            main_param = threes.get(threes.size() - 1).getType();
+        }
     }
 
     private void getCondition(Figure choice) {
@@ -436,11 +440,18 @@ public class TestScene extends Application {
             System.out.println("Правильно" + "\n");
             points += 2;
             threes.add(chosenFigure);
-            main_param = threes.get(threes.size() - 1).getColor();
+
+            if (ID == ID_SAME_COLOR || ID == ID_DIFF_COLOR){
+                main_param = threes.get(threes.size() - 1).getColor();
+            } else if (ID == ID_SAME_SIZE || ID == ID_DIFF_SIZE) {
+                main_param = threes.get(threes.size() - 1).getSize();
+            } else if (ID == ID_SAME_TYPE || ID == ID_DIFF_TYPE) {
+                main_param = threes.get(threes.size() - 1).getType();
+            }
 
             if (threes.size() == 8) {
-                System.out.println("Поздравляем! Вы прошли первый тур! Условием было: " + name_of_game);
-                System.out.println("Набрано очков: " + points);
+                Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
+                        Alert.AlertType.INFORMATION);
             }
 
             return true;
@@ -451,17 +462,8 @@ public class TestScene extends Application {
             threes.add(chosenFigure);
 
             if (threes.size() == 8) {
-
-                // Диалоговое окно
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("ELUS");
-                alert.setHeaderText("Поздравляем! Вы прошли первый тур! Условием было: " + name_of_game);
-                alert.setContentText("Набрано очков: " + points);
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
-                    Platform.exit();
-                }
+                Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
+                        Alert.AlertType.INFORMATION);
             }
             return true;
 
@@ -470,17 +472,8 @@ public class TestScene extends Application {
             System.out.println("Неправильно. У вас осталось " + attempts + " попыток" + "\n");
 
             if (attempts == 0) {
-
-                // Диалоговое окно
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ELUS");
-                alert.setHeaderText("Игра окончена. Вы дисквалифицированы. Условием было: " + name_of_game);
-                alert.setContentText("Набрано очков: " + points);
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
-                    Platform.exit();
-                }
+                Tools.dialogWindow(name_of_game, points, "Игра окончена! Вы дисквалифицированы!",
+                        Alert.AlertType.ERROR);
             }
             return false;
 
@@ -488,30 +481,46 @@ public class TestScene extends Application {
     }
 
 
-    public ArrayList<Figure> gameByColor_view(Color currColor) {
-        Stream<Figure> currColorAnswers;
-        Stream<Figure> wrongColorAnswers;
+    public ArrayList<Figure> gameByColor_view(Param currParam) {
+        Stream<Figure> currParamAnswers;
+        Stream<Figure> wrongParamAnswers;
 
+        //Создание массивов нужного цвета ("правильных") и неправильного ("неверных")
         if (ID == 100) {
-            //Создание массивов нужного цвета ("правильных") и неправильного ("неверных")
-            currColorAnswers = figures.stream().filter(figure -> figure.getColor() == currColor);
-            wrongColorAnswers = figures.stream().filter(figure -> figure.getColor() != currColor);
+            currParamAnswers = figures.stream().filter(figure -> figure.getColor() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getColor() != currParam);
+        } else if (ID == 101) {
+            currParamAnswers = figures.stream().filter(figure -> figure.getSize() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getSize() != currParam);
+        } else if (ID == 102) {
+            currParamAnswers = figures.stream().filter(figure -> figure.getType() == currParam);
+            wrongParamAnswers = figures.stream().filter(figure -> figure.getType() != currParam);
         } else {
-            currColorAnswers = figures.stream();
-            wrongColorAnswers = figures.stream();
+            currParamAnswers = figures.stream();
+            wrongParamAnswers = figures.stream();
         }
 
         //Перевод из Стримов в Листы
-        rightAnswers = currColorAnswers.collect(Collectors.toList());
-        wrongAnswers = wrongColorAnswers.collect(Collectors.toList());
+        rightAnswers = currParamAnswers.collect(Collectors.toList());
+        wrongAnswers = wrongParamAnswers.collect(Collectors.toList());
 
         //Режим с иным типом\цветом\размером специфичен и весьма заметно отличается от режима с одинаковым параметром.
         // Так что для создания "правильных" и "неправильных" массивов вызывается дополнительная функция
-        if (ID == 110) {
-            threes = (ArrayList<Figure>) Tools.makeThrees_1st(figures, currColor, 3);
-            main_param = threes.get(threes.size() - 1).getColor();
-            System.out.println("Diff color");
-        } else if (ID == 100) {
+        if (ID == 110 || ID == 111 || ID == 112) {
+            threes = (ArrayList<Figure>) Tools.makeThrees_1st(figures, currParam, 3);
+
+            if (ID == 110) {
+                main_param = threes.get(threes.size() - 1).getColor();
+                System.out.println("Diff color");
+            } else if (ID == 111) {
+                main_param = threes.get(threes.size() - 1).getSize();
+                System.out.println("Diff size");
+            } else if (ID == 112) {
+                main_param = threes.get(threes.size() - 1).getType();
+                System.out.println("Diff type");
+            }
+
+        } else if (ID == 100 || ID == 101 || ID == 102) {
             List<Figure> rightAnswers_copy = new ArrayList<>(rightAnswers.subList(0, rightAnswers.size()));
             threes = (ArrayList<Figure>) Tools.exceptRepeatInList(rightAnswers_copy, 3);
         }
