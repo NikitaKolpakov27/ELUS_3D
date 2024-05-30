@@ -53,7 +53,6 @@ public class TestScene extends Application {
     List<Figure> rightAnswers;
     List<Figure> wrongAnswers;
 
-    //    ArrayList<Figure> threes = (ArrayList<Figure>) Tools.makeThrees_1st(Game.figures, main_param, 3);
     ArrayList<Figure> threes = gameByColor_view(main_param);
 
     // Получение списка ответов для выбора (в определенном (нехорошем) порядке)
@@ -411,7 +410,7 @@ public class TestScene extends Application {
     }
 
 
-    public boolean playRound(Figure chosenFigure) throws Exception {
+    public boolean playRound(Figure chosenFigure) {
 
         getCondition(chosenFigure);
 
