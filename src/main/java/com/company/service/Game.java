@@ -6,6 +6,7 @@ import com.company.enums.Type;
 import com.company.model.Figure;
 
 import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -70,5 +71,77 @@ public class Game {
 
     public Tour getTour() {
         return tour;
+    }
+
+    public static int initializeID_firstRound() {
+        Random randomizer = new Random();
+        return FIRST_ROUND_GAME_TYPES.get(randomizer.nextInt(FIRST_ROUND_GAME_TYPES.size()));
+    }
+
+    public static Param initializeParam_firstRound(int ID) {
+        Random randomizer = new Random();
+        Param selectedParam = null;
+
+        switch (ID) {
+
+            case ID_SAME_COLOR -> {
+                int color = randomizer.nextInt(2);
+
+                if (color == 0) {
+                    selectedParam = Color.BLUE;
+                } else {
+                    selectedParam = Color.YELLOW;
+                }
+            }
+
+            case ID_SAME_SIZE -> {
+                int size = randomizer.nextInt(2);
+
+                if (size == 0) {
+                    selectedParam = Size.BIG;
+                } else {
+                    selectedParam = Size.SMALL;
+                }
+            }
+
+            case ID_SAME_TYPE -> {
+                int type = randomizer.nextInt(2);
+
+                if (type == 0) {
+                    selectedParam = Type.CIRCLE;
+                } else {
+                    selectedParam = Type.SQUARE;
+                }
+            }
+
+            default -> {
+                int param_select = randomizer.nextInt(2);
+
+                if (ID == 110) {
+                    if (param_select == 0) {
+                        selectedParam = Color.BLUE;
+                    } else {
+                        selectedParam = Color.YELLOW;
+                    }
+                }
+
+                if (ID == 111) {
+                    if (param_select == 0) {
+                        selectedParam = Size.BIG;
+                    } else {
+                        selectedParam = Size.SMALL;
+                    }
+                }
+
+                if (ID == 112) {
+                    if (param_select == 0) {
+                        selectedParam = Type.CIRCLE;
+                    } else {
+                        selectedParam = Type.SQUARE;
+                    }
+                }
+            }
+        }
+        return selectedParam;
     }
 }

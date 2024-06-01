@@ -47,8 +47,8 @@ public class TestScene extends Application {
     Param condition = null;
     String name_of_game = "";
 
-    Param main_param = Size.SMALL;
-    public int ID = 111;
+    public int ID = Game.initializeID_firstRound();
+    Param main_param = Game.initializeParam_firstRound(ID);
 
     List<Figure> rightAnswers;
     List<Figure> wrongAnswers;
@@ -166,9 +166,10 @@ public class TestScene extends Application {
             x += 150;
         }
 
-        System.out.println("Right: " + rightAnswers);
-        System.out.println("Wrong: " + wrongAnswers);
-        System.out.println("Param: " + main_param);
+//        System.out.println("Right: " + rightAnswers);
+//        System.out.println("Wrong: " + wrongAnswers);
+//        System.out.println("Param: " + main_param);
+        System.out.println("ID: " + ID);
         return figs;
 
     }
@@ -433,9 +434,9 @@ public class TestScene extends Application {
                         // Выбираем YELLOW, если последний элемент в списке - SMALL (то бишь, != currObj)
 
 
-        System.out.println("curr equality: " + (condition != main_param));
-        System.out.println("curr cond: " + condition);
-        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
+//        System.out.println("curr equality: " + (condition != main_param));
+//        System.out.println("curr cond: " + condition);
+//        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
         if (conditionFirstRoundNormal) {
             Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();

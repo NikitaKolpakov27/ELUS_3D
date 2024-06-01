@@ -300,7 +300,6 @@ public class Tools {
 
         // Вычисляем координаты для вставляемой фигуры
         double coord = shapes.get(shapes.size() - 1).getTranslateX();
-        System.out.println(coord);
 
         if (drawing_figure.getType() == Type.CIRCLE) {
 
