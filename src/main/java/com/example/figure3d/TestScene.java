@@ -8,7 +8,6 @@ import com.company.service.Game;
 import com.company.service.Param;
 import com.company.service.Tools;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -18,42 +17,39 @@ import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
 
-import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.company.service.Game.*;
 
 public class TestScene extends Application {
+    Stage primaryStage;
+
     public static int points = 0;
     public static int attempts = 3;
 
     Param condition = null;
     String name_of_game = "";
 
+    // Получаем ГТ игры и параметр, относительно которого будет вестись игра
     public int ID = Game.initializeID_firstRound();
     Param main_param = Game.initializeParam_firstRound(ID);
 
     List<Figure> rightAnswers;
     List<Figure> wrongAnswers;
 
-    ArrayList<Figure> threes = gameByColor_view(main_param);
+    ArrayList<Figure> threes = gameByParam(main_param);
 
     // Получение списка ответов для выбора (в определенном (нехорошем) порядке)
     List<Figure> raw_choices = Tools.getChoices(rightAnswers, wrongAnswers, threes, ID, main_param);
@@ -189,6 +185,7 @@ public class TestScene extends Application {
 
     @Override
     public void start(Stage stage) {
+        primaryStage = stage;
 
         // Текущая фигура (выбранная игроком)
         final Figure[] currentFigure = {null};
@@ -213,7 +210,7 @@ public class TestScene extends Application {
         label_elus.setTextFill(javafx.scene.paint.Color.RED);
         label_elus.setAlignment(Pos.CENTER);
 
-        Label label_seq = new Label("Текущая последовательность");
+        Label label_seq = new Label("Текущая последовательность (1-й тур)");
         label_seq.setLayoutX(400);
         label_seq.setLayoutY(60);
         label_seq.setFont(Font.font("Helvetica", 40));
@@ -453,7 +450,7 @@ public class TestScene extends Application {
 
             if (threes.size() == 8) {
                 Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
-                        Alert.AlertType.INFORMATION);
+                        Alert.AlertType.INFORMATION, primaryStage);
             }
 
             return true;
@@ -465,7 +462,7 @@ public class TestScene extends Application {
 
             if (threes.size() == 8) {
                 Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
-                        Alert.AlertType.INFORMATION);
+                        Alert.AlertType.INFORMATION, primaryStage);
             }
             return true;
 
@@ -475,7 +472,7 @@ public class TestScene extends Application {
 
             if (attempts == 0) {
                 Tools.dialogWindow(name_of_game, points, "Игра окончена! Вы дисквалифицированы!",
-                        Alert.AlertType.ERROR);
+                        Alert.AlertType.ERROR, primaryStage);
             }
             return false;
 
@@ -483,7 +480,7 @@ public class TestScene extends Application {
     }
 
 
-    public ArrayList<Figure> gameByColor_view(Param currParam) {
+    public ArrayList<Figure> gameByParam(Param currParam) {
         Stream<Figure> currParamAnswers;
         Stream<Figure> wrongParamAnswers;
 

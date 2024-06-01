@@ -4,6 +4,7 @@ import com.company.enums.Color;
 import com.company.enums.Size;
 import com.company.enums.Type;
 import com.company.model.Figure;
+import com.example.figure3d.SecondTour;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
@@ -12,6 +13,8 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -352,7 +355,7 @@ public class Tools {
     }
 
     // Диалоговое окно на выходе из приложения (выигрыш/проигрыш)
-    public static void dialogWindow(String name_of_game, int points, String text, Alert.AlertType alertType) {
+    public static void dialogWindow(String name_of_game, int points, String text, Alert.AlertType alertType, Stage stage) {
 
         Alert alert = new Alert(alertType);
         alert.setTitle("ELUS");
@@ -360,8 +363,15 @@ public class Tools {
         alert.setContentText("Набрано очков: " + points);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE){
-            Platform.exit();
+
+        if (alert.getAlertType() == Alert.AlertType.INFORMATION) {
+            if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE) {
+//            Platform.exit();
+                stage.close();
+                new SecondTour().start(new Stage());
+            }
+        } else {
+            stage.close();
         }
     }
 }
