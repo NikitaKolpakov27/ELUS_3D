@@ -364,6 +364,7 @@ public class Tools {
 
         Optional<ButtonType> result = alert.showAndWait();
 
+        // Если мы не прошли 1-й тур, то игра заканчивается. Если прошли - начинается 2-ой тур
         if (alert.getAlertType() == Alert.AlertType.INFORMATION) {
             if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE) {
 //            Platform.exit();
