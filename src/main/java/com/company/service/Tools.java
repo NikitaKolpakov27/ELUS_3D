@@ -271,62 +271,6 @@ public class Tools {
 
     }
 
-    /*
-    * Метод для выбора отрисовки фигур в javafx
-    *
-    * @drawing_figure - сама фигура, которая будет отрисовываться
-    * @root - Группа объектов в сцене javafx
-    * @shapes - массив, состоящий из 3D фигур, которые уже отрисованы (первые правильные 3 штуки нужные для игрока)
-    *
-    * */
-    public static void draw_figure(Figure drawing_figure, Group root, ArrayList<Shape3D> shapes) {
-        PhongMaterial fig_color;
-        int v;
-        int v1;
-        int v2;
-
-        if (drawing_figure.getSize() == Size.BIG) {
-            v = 80;
-            v1 = 80;
-            v2 = 80;
-        } else {
-            v = 50;
-            v1 = 50;
-            v2 = 50;
-        }
-
-        if (drawing_figure.getColor() == com.company.enums.Color.BLUE) {
-            fig_color = new PhongMaterial(javafx.scene.paint.Color.BLUE);
-        } else {
-            fig_color = new PhongMaterial(javafx.scene.paint.Color.YELLOW);
-        }
-
-        // Вычисляем координаты для вставляемой фигуры
-        double coord = shapes.get(shapes.size() - 1).getTranslateX();
-
-        if (drawing_figure.getType() == Type.CIRCLE) {
-
-            // Create a Sphere
-            Sphere sphere = new Sphere(v);
-            sphere.setTranslateX(coord + 150);
-            sphere.setTranslateY(150);
-            sphere.setTranslateZ(400);
-            sphere.setMaterial(fig_color);
-            root.getChildren().add(sphere);
-
-        } else {
-
-            // Create a Square
-            Box box = new Box(v, v1, v2);
-            box.setTranslateX(coord + 150);
-            box.setTranslateY(150);
-            box.setTranslateZ(400);
-            box.setMaterial(fig_color);
-            root.getChildren().add(box);
-
-        }
-    }
-
     public static List<List<Figure>> makeAnswers_1st(Param currParam, int id) {
         Stream<Figure> currParamAnswers = null;
         Stream<Figure> wrongParamAnswers = null;
@@ -355,7 +299,7 @@ public class Tools {
     }
 
     // Диалоговое окно на выходе из приложения (выигрыш/проигрыш)
-    public static void dialogWindow(String name_of_game, int points, String text, Alert.AlertType alertType, Stage stage) {
+    public static void dialogWindow(String name_of_game, int points, String text, Alert.AlertType alertType, Stage stage, boolean isLastGame) {
 
         Alert alert = new Alert(alertType);
         alert.setTitle("ELUS");
@@ -363,6 +307,11 @@ public class Tools {
         alert.setContentText("Набрано очков: " + points);
 
         Optional<ButtonType> result = alert.showAndWait();
+
+        if (isLastGame) {
+            stage.close();
+            return;
+        }
 
         // Если мы не прошли 1-й тур, то игра заканчивается. Если прошли - начинается 2-ой тур
         if (alert.getAlertType() == Alert.AlertType.INFORMATION) {

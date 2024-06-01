@@ -78,6 +78,11 @@ public class Game {
         return FIRST_ROUND_GAME_TYPES.get(randomizer.nextInt(FIRST_ROUND_GAME_TYPES.size()));
     }
 
+    public static int initializeID_secondRound() {
+        Random randomizer = new Random();
+        return SECOND_ROUND_GAME_TYPES.get(randomizer.nextInt(SECOND_ROUND_GAME_TYPES.size()));
+    }
+
     public static Param initializeParam_firstRound(int ID) {
         Random randomizer = new Random();
         Param selectedParam = null;
@@ -139,6 +144,39 @@ public class Game {
                     } else {
                         selectedParam = Type.SQUARE;
                     }
+                }
+            }
+        }
+        return selectedParam;
+    }
+
+    public static Param initializeParam_secondRound(int ID) {
+        Random randomizer = new Random();
+        Param selectedParam = null;
+
+        switch (ID) {
+
+            case ID_BIG_BLUE -> selectedParam = Size.BIG;
+
+            case ID_SMALL_BLUE -> selectedParam = Size.SMALL;
+
+            case ID_BLUE_CIRCLE -> {
+                int color = randomizer.nextInt(2);
+
+                if (color == 0) {
+                    selectedParam = Color.BLUE;
+                } else {
+                    selectedParam = Color.YELLOW;
+                }
+            }
+
+            case ID_SQUARE_BIG -> {
+                int type = randomizer.nextInt(2);
+
+                if (type == 0) {
+                    selectedParam = Type.SQUARE;
+                } else {
+                    selectedParam = Type.CIRCLE;
                 }
             }
         }

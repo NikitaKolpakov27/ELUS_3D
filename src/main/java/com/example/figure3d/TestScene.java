@@ -57,126 +57,17 @@ public class TestScene extends Application {
     // Получение списка ответов для выбора (в рандомном порядке)
     List<Figure> choices = Tools.makeRandomOrderList(raw_choices);
 
-    
-    public ArrayList<Shape3D> getFigure() {
-
-        Sphere sphere = null;
-        Box box = null;
-        ArrayList<Shape3D> figs = new ArrayList<>();
-
-        int x = 150;
-        int y = 150;
-        int z = 400;
-
-        for (Figure figure : threes) {
-            int v = 0;
-            int v1 = 0;
-            int v2 = 0;
-            PhongMaterial color;
-
-            if (figure.getSize() == Size.BIG) {
-                v = 80;
-                v1 = 80;
-                v2 = 80;
-            } else {
-                v = 50;
-                v1 = 50;
-                v2 = 50;
-            }
-
-            if (figure.getColor() == com.company.enums.Color.BLUE) {
-                color = new PhongMaterial(javafx.scene.paint.Color.BLUE);
-            } else {
-                color = new PhongMaterial(javafx.scene.paint.Color.YELLOW);
-            }
-
-            if (figure.getType() == Type.CIRCLE) {
-                sphere = new Sphere(v);
-                sphere.setTranslateX(x);
-                sphere.setTranslateY(y);
-                sphere.setTranslateZ(z);
-                sphere.setMaterial(color);
-                figs.add(sphere);
-            } else {
-                box = new Box(v, v1, v2);
-                box.setTranslateX(x);
-                box.setTranslateY(y);
-                box.setTranslateZ(z);
-                box.setMaterial(color);
-                figs.add(box);
-            }
-            x += 150;
-        }
-
-        return figs;
-
-    }
-
-    public ArrayList<Shape3D> getChoices(List<Figure> threes, Param currObj) {
-
-        Sphere sphere;
-        Box box;
-        ArrayList<Shape3D> figs = new ArrayList<>();
-
-        int x = 150;
-        int y = 400;
-        int z = 400;
-
-        for (Figure figure : choices) {
-            int v = 0;
-            int v1 = 0;
-            int v2 = 0;
-            PhongMaterial color;
-
-            if (figure.getSize() == Size.BIG) {
-                v = 80;
-                v1 = 80;
-                v2 = 80;
-            } else {
-                v = 50;
-                v1 = 50;
-                v2 = 50;
-            }
-
-            if (figure.getColor() == com.company.enums.Color.BLUE) {
-                color = new PhongMaterial(javafx.scene.paint.Color.BLUE);
-            } else {
-                color = new PhongMaterial(javafx.scene.paint.Color.YELLOW);
-            }
-
-            if (figure.getType() == Type.CIRCLE) {
-                sphere = new Sphere(v);
-                sphere.setTranslateX(x);
-                sphere.setTranslateY(y);
-                sphere.setTranslateZ(z);
-                sphere.setMaterial(color);
-                figs.add(sphere);
-            } else {
-                box = new Box(v, v1, v2);
-                box.setTranslateX(x);
-                box.setTranslateY(y);
-                box.setTranslateZ(z);
-                box.setMaterial(color);
-                figs.add(box);
-            }
-            x += 150;
-        }
-
-//        System.out.println("Right: " + rightAnswers);
-//        System.out.println("Wrong: " + wrongAnswers);
-//        System.out.println("Param: " + main_param);
-        System.out.println("ID: " + ID);
-        return figs;
-
-    }
-
     // Массив из отрисованных фигур
-    ArrayList<Shape3D> shapes = getFigure();
+    ArrayList<Shape3D> shapes = DrawUtils.getFigure(threes);
 
     // Массив из отрисованных фигур, предложенных для выбора игроку
-    ArrayList<Shape3D> choices3D = getChoices(threes, main_param);
+    ArrayList<Shape3D> choices3D = DrawUtils.getChoices(choices);
 
     Group root = new Group();
+
+    public static int getPoints() {
+        return points;
+    }
 
     public static void main(String[] args)
     {
@@ -244,7 +135,7 @@ public class TestScene extends Application {
 
                 try {
                     if (playRound(currentFigure[0])) {
-                        Tools.draw_figure(choices.get(0), root, shapes);
+                        DrawUtils.draw_figure(choices.get(0), root, shapes);
                         updateFigures();
                     }
                 } catch (Exception ex) {
@@ -267,7 +158,7 @@ public class TestScene extends Application {
 
                 try {
                     if (playRound(currentFigure[0])) {
-                        Tools.draw_figure(choices.get(1), root, shapes);
+                        DrawUtils.draw_figure(choices.get(1), root, shapes);
                         updateFigures();
                     }
                 } catch (Exception ex) {
@@ -291,7 +182,7 @@ public class TestScene extends Application {
 
                 try {
                     if (playRound(currentFigure[0])) {
-                        Tools.draw_figure(choices.get(2), root, shapes);
+                        DrawUtils.draw_figure(choices.get(2), root, shapes);
                         updateFigures();
                     }
                 } catch (Exception ex) {
@@ -327,7 +218,7 @@ public class TestScene extends Application {
         choices = Tools.makeRandomOrderList(raw_choices);
 
         // Обновление правильной последовательности
-        shapes = getFigure();
+        shapes = DrawUtils.getFigure(threes);
 
         // Удаление прошлых фигур
         for (Shape3D choice : choices3D) {
@@ -335,7 +226,7 @@ public class TestScene extends Application {
         }
 
         // Добавление новых фигур
-        choices3D = getChoices(threes, main_param);
+        choices3D = DrawUtils.getChoices(choices);
         for (Shape3D choice : choices3D) {
             root.getChildren().add(choice);
         }
@@ -450,7 +341,7 @@ public class TestScene extends Application {
 
             if (threes.size() == 8) {
                 Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
-                        Alert.AlertType.INFORMATION, primaryStage);
+                        Alert.AlertType.INFORMATION, primaryStage, false);
             }
 
             return true;
@@ -462,7 +353,7 @@ public class TestScene extends Application {
 
             if (threes.size() == 8) {
                 Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
-                        Alert.AlertType.INFORMATION, primaryStage);
+                        Alert.AlertType.INFORMATION, primaryStage, false);
             }
             return true;
 
@@ -472,7 +363,7 @@ public class TestScene extends Application {
 
             if (attempts == 0) {
                 Tools.dialogWindow(name_of_game, points, "Игра окончена! Вы дисквалифицированы!",
-                        Alert.AlertType.ERROR, primaryStage);
+                        Alert.AlertType.ERROR, primaryStage, false);
             }
             return false;
 
