@@ -1,6 +1,7 @@
 package com.example.figure3d;
 
 import com.company.enums.Color;
+import com.company.enums.Size;
 import com.company.enums.Type;
 import com.company.model.Figure;
 import com.company.service.Game;
@@ -37,8 +38,7 @@ public class SecondTour extends Application {
     String name_of_game = "";
 
     // Получаем ГТ игры и параметр, относительно которого будет вестись игра
-//    public int ID = Game.initializeID_secondRound();
-    public int ID = 201;
+    public int ID = Game.initializeID_secondRound();
     Param main_param = Game.initializeParam_secondRound(ID);
 
     ArrayList<Figure> threes = gameByParam_2nd(main_param);
@@ -282,15 +282,6 @@ public class SecondTour extends Application {
         for (Shape3D choice : choices3D) {
             root.getChildren().add(choice);
         }
-
-        //TODO: Поменять тут логику (пока хз на какую)
-        if (ID == ID_SAME_COLOR || ID == ID_DIFF_COLOR){
-            main_param = threes.get(threes.size() - 1).getColor();
-        } else if (ID == ID_SAME_SIZE || ID == ID_DIFF_SIZE) {
-            main_param = threes.get(threes.size() - 1).getSize();
-        } else if (ID == ID_SAME_TYPE || ID == ID_DIFF_TYPE) {
-            main_param = threes.get(threes.size() - 1).getType();
-        }
     }
 
     private void getCondition(Figure choice) {
@@ -374,24 +365,21 @@ public class SecondTour extends Application {
                 ||
                 condition == Type.SQUARE && last_elem.getColor() != main_param;
 
+        // Условие, что правильно выбрали, когда SQUARE = BIG или CIRCLE = SMALL
+        boolean conditionSecondRound_SquareBig =
+                condition == Size.BIG && last_elem.getType() == main_param
+                ||
+                condition == Size.SMALL && last_elem.getType() != main_param;
 
 
 //        System.out.println("curr equality: " + (condition != main_param));
 //        System.out.println("curr cond: " + condition);
 //        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
-        if (conditionSecondRound_BigBlue || conditionSecondRound_BlueCircle) {
+        if (conditionSecondRound_BigBlue || conditionSecondRound_BlueCircle | conditionSecondRound_SquareBig) {
             Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();
             points += 2;
             threes.add(chosenFigure);
-
-            if (ID == ID_SAME_COLOR || ID == ID_DIFF_COLOR){
-                main_param = threes.get(threes.size() - 1).getColor();
-            } else if (ID == ID_SAME_SIZE || ID == ID_DIFF_SIZE) {
-                main_param = threes.get(threes.size() - 1).getSize();
-            } else if (ID == ID_SAME_TYPE || ID == ID_DIFF_TYPE) {
-                main_param = threes.get(threes.size() - 1).getType();
-            }
 
             if (threes.size() == 8) {
                 Tools.dialogWindow(name_of_game, points, "Поздравляем! Вы прошли первый тур!",
