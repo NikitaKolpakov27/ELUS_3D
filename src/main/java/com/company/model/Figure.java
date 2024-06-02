@@ -1,5 +1,4 @@
 package com.company.model;
-
 import com.company.enums.*;
 
 public class Figure {

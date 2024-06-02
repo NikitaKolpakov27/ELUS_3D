@@ -1,15 +1,10 @@
 package com.example.figure3d;
 
-import com.company.enums.Color;
-import com.company.enums.Size;
-import com.company.enums.Type;
 import com.company.model.Figure;
 import com.company.service.Game;
 import com.company.service.Param;
 import com.company.service.Tools;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -18,14 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
 import javafx.scene.shape.Shape3D;
-import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.controlsfx.control.Notifications;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +24,7 @@ import java.util.stream.Stream;
 
 import static com.company.service.Game.*;
 
-public class TestScene extends Application {
+public class FirstTour extends Application {
     Stage primaryStage;
 
     public static int points = 0;
@@ -128,19 +119,16 @@ public class TestScene extends Application {
         decision1.setPrefSize(50, 50);
         decision1.setLayoutX(275);
         decision1.setLayoutY(450);
-        decision1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                currentFigure[0] = choices.get(0);
+        decision1.setOnAction(e -> {
+            currentFigure[0] = choices.get(0);
 
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(0), root, shapes);
-                        updateFigures();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(0), root, shapes);
+                    updateFigures();
                 }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
         root.getChildren().add(decision1);
@@ -150,22 +138,19 @@ public class TestScene extends Application {
         decision2.setPrefSize(50, 50);
         decision2.setLayoutX(385);
         decision2.setLayoutY(450);
-        decision2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
+        decision2.setOnAction(e -> {
 
-                currentFigure[0] = choices.get(1);
+            currentFigure[0] = choices.get(1);
 
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(1), root, shapes);
-                        updateFigures();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(1), root, shapes);
+                    updateFigures();
                 }
-
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
+
         });
         root.getChildren().add(decision2);
 
@@ -174,20 +159,17 @@ public class TestScene extends Application {
         decision3.setPrefSize(50, 50);
         decision3.setLayoutX(495);
         decision3.setLayoutY(450);
-        decision3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                currentFigure[0] = choices.get(2);
+        decision3.setOnAction(e -> {
+            currentFigure[0] = choices.get(2);
 
 
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(2), root, shapes);
-                        updateFigures();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(2), root, shapes);
+                    updateFigures();
                 }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
         root.getChildren().add(decision3);
@@ -311,20 +293,6 @@ public class TestScene extends Application {
         // Условие, что правильно выбрали в последних 3-х геймах
         boolean conditionFirstRoundSpecial = condition != main_param &&
                 (ID == Game.ID_DIFF_SIZE || ID == Game.ID_DIFF_COLOR || ID == Game.ID_DIFF_TYPE);
-
-        // 2-Й ТУР //
-        // Условие, что правильно выбрали, когда Биг = Блу или SMALL = BLUE
-        boolean conditionSecondRound_BigBlue =
-                condition == Color.BLUE && threes.get(threes.size() - 1).getSize() == main_param
-                        // Проверяем, что выбрали BLUE, если последний элемент в списке - BIG
-                        || // или
-                condition == Color.YELLOW && threes.get(threes.size() - 1).getSize() != main_param;
-                        // Выбираем YELLOW, если последний элемент в списке - SMALL (то бишь, != currObj)
-
-
-//        System.out.println("curr equality: " + (condition != main_param));
-//        System.out.println("curr cond: " + condition);
-//        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
         if (conditionFirstRoundNormal) {
             Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();

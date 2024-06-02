@@ -32,7 +32,6 @@ public class Game {
             ID_BIG_BLUE, ID_SMALL_BLUE, ID_BLUE_CIRCLE, ID_SQUARE_BIG
     );
 
-
     public static final List<Figure> figures = List.of(
             new Figure(Color.BLUE, Size.BIG, Type.CIRCLE), new Figure(Color.BLUE, Size.BIG, Type.SQUARE),
             new Figure(Color.BLUE, Size.SMALL, Type.CIRCLE), new Figure(Color.BLUE, Size.SMALL, Type.SQUARE),
@@ -151,7 +150,6 @@ public class Game {
     }
 
     public static Param initializeParam_secondRound(int ID) {
-        Random randomizer = new Random();
         Param selectedParam = null;
 
         switch (ID) {

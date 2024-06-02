@@ -3,7 +3,6 @@ package com.example.figure3d;
 import com.company.enums.Size;
 import com.company.enums.Type;
 import com.company.model.Figure;
-import com.company.service.Param;
 import javafx.scene.Group;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -18,8 +17,8 @@ public class DrawUtils {
     // Отрисовка фигур правильной последовательности
     public static ArrayList<Shape3D> getFigure(List<Figure> threes) {
 
-        Sphere sphere = null;
-        Box box = null;
+        Sphere sphere;
+        Box box;
         ArrayList<Shape3D> figs = new ArrayList<>();
 
         int x = 150;
@@ -27,9 +26,9 @@ public class DrawUtils {
         int z = 400;
 
         for (Figure figure : threes) {
-            int v = 0;
-            int v1 = 0;
-            int v2 = 0;
+            int v;
+            int v1;
+            int v2;
             PhongMaterial color;
 
             if (figure.getSize() == Size.BIG) {
@@ -82,9 +81,9 @@ public class DrawUtils {
         int z = 400;
 
         for (Figure figure : choices) {
-            int v = 0;
-            int v1 = 0;
-            int v2 = 0;
+            int v;
+            int v1;
+            int v2;
             PhongMaterial color;
 
             if (figure.getSize() == Size.BIG) {
@@ -121,9 +120,6 @@ public class DrawUtils {
             x += 150;
         }
 
-//        System.out.println("Right: " + rightAnswers);
-//        System.out.println("Wrong: " + wrongAnswers);
-//        System.out.println("Param: " + main_param);
         return figs;
     }
 
@@ -132,7 +128,7 @@ public class DrawUtils {
      *
      * @drawing_figure - сама фигура, которая будет отрисовываться
      * @root - Группа объектов в сцене javafx
-     * @shapes - массив, состоящий из 3D фигур, которые уже отрисованы (первые правильные 3 штуки нужные для игрока)
+     * @shapes - массив, состоящий из уже отрисованных 3D фигур (первые правильные 3 штуки нужные для игрока)
      *
      * */
     public static void draw_figure(Figure drawing_figure, Group root, ArrayList<Shape3D> shapes) {

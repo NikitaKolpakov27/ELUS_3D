@@ -8,8 +8,6 @@ import com.company.service.Game;
 import com.company.service.Param;
 import com.company.service.Tools;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -31,7 +29,7 @@ import static com.company.service.Game.*;
 public class SecondTour extends Application {
     Stage primaryStage;
 
-    public static int points = TestScene.getPoints();
+    public static int points = FirstTour.getPoints();
     public static int attempts = 3;
 
     Param condition = null;
@@ -120,19 +118,16 @@ public class SecondTour extends Application {
         decision1.setPrefSize(50, 50);
         decision1.setLayoutX(275);
         decision1.setLayoutY(450);
-        decision1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                currentFigure[0] = choices.get(0);
+        decision1.setOnAction(e -> {
+            currentFigure[0] = choices.get(0);
 
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(0), root, shapes);
-                        updateFigures_2nd();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(0), root, shapes);
+                    updateFigures_2nd();
                 }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
         root.getChildren().add(decision1);
@@ -142,22 +137,19 @@ public class SecondTour extends Application {
         decision2.setPrefSize(50, 50);
         decision2.setLayoutX(385);
         decision2.setLayoutY(450);
-        decision2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
+        decision2.setOnAction(e -> {
 
-                currentFigure[0] = choices.get(1);
+            currentFigure[0] = choices.get(1);
 
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(1), root, shapes);
-                        updateFigures_2nd();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(1), root, shapes);
+                    updateFigures_2nd();
                 }
-
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
+
         });
         root.getChildren().add(decision2);
 
@@ -166,20 +158,16 @@ public class SecondTour extends Application {
         decision3.setPrefSize(50, 50);
         decision3.setLayoutX(495);
         decision3.setLayoutY(450);
-        decision3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                currentFigure[0] = choices.get(2);
+        decision3.setOnAction(e -> {
+            currentFigure[0] = choices.get(2);
 
-
-                try {
-                    if (playRound(currentFigure[0])) {
-                        DrawUtils.draw_figure(choices.get(2), root, shapes);
-                        updateFigures_2nd();
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+            try {
+                if (playRound(currentFigure[0])) {
+                    DrawUtils.draw_figure(choices.get(2), root, shapes);
+                    updateFigures_2nd();
                 }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
         root.getChildren().add(decision3);
@@ -372,9 +360,9 @@ public class SecondTour extends Application {
                 condition == Size.SMALL && last_elem.getType() != main_param;
 
 
-//        System.out.println("curr equality: " + (condition != main_param));
-//        System.out.println("curr cond: " + condition);
-//        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
+        // System.out.println("curr equality: " + (condition != main_param));
+        // System.out.println("curr cond: " + condition);
+        // System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
         if (conditionSecondRound_BigBlue || conditionSecondRound_BlueCircle | conditionSecondRound_SquareBig) {
             Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();

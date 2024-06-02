@@ -2,20 +2,11 @@ package com.company.service;
 
 import com.company.enums.Color;
 import com.company.enums.Size;
-import com.company.enums.Type;
 import com.company.model.Figure;
 import com.example.figure3d.SecondTour;
-import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Shape3D;
-import javafx.scene.shape.Sphere;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -291,11 +282,11 @@ public class Tools {
         }
 
         //Перевод из Стримов в Листы
+        assert currParamAnswers != null;
         List<Figure> rightAnswers = currParamAnswers.toList();
         List<Figure> wrongAnswers = wrongParamAnswers.toList();
 
-        List<List<Figure>> answers = List.of(rightAnswers, wrongAnswers);
-        return answers;
+        return List.of(rightAnswers, wrongAnswers);
     }
 
     // Диалоговое окно на выходе из приложения (выигрыш/проигрыш)
@@ -313,7 +304,7 @@ public class Tools {
             return;
         }
 
-        // Если мы не прошли 1-й тур, то игра заканчивается. Если прошли - начинается 2-ой тур
+        // Если мы не прошли 1-й тур, то игра заканчивается. Если прошли - начинается 2-й тур
         if (alert.getAlertType() == Alert.AlertType.INFORMATION) {
             if (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE) {
 //            Platform.exit();
