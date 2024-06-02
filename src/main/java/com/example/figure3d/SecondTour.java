@@ -1,6 +1,7 @@
 package com.example.figure3d;
 
 import com.company.enums.Color;
+import com.company.enums.Type;
 import com.company.model.Figure;
 import com.company.service.Game;
 import com.company.service.Param;
@@ -199,7 +200,7 @@ public class SecondTour extends Application {
         Figure secondFigure = null;
         Figure thirdFigure = null;
 
-        if (ID == 200) {
+        if (ID == 200 || ID == 201) {
 
             // Проверяем первую фигуру и на ее основе формируем вторую
             if (firstFigure.getSize() == currParam) {
@@ -215,23 +216,7 @@ public class SecondTour extends Application {
                 thirdFigure = Game.figures_only_yellow.get(rand.nextInt(0, Game.figures_only_yellow.size()));
             }
 
-        } else if (ID == 201) {
-
-            // Проверяем первую фигуру и на ее основе формируем вторую
-            if (firstFigure.getSize() != currParam) {
-                secondFigure = Game.figures_only_blue.get(rand.nextInt(0, Game.figures_only_blue.size()));
-            } else {
-                secondFigure = Game.figures_only_yellow.get(rand.nextInt(0, Game.figures_only_yellow.size()));
-            }
-
-            // По аналогии формируем третью фигуру
-            if (secondFigure.getSize() != currParam) {
-                thirdFigure = Game.figures_only_blue.get(rand.nextInt(0, Game.figures_only_blue.size()));
-            } else {
-                thirdFigure = Game.figures_only_yellow.get(rand.nextInt(0, Game.figures_only_yellow.size()));
-            }
-
-        } else if (ID == 202) {
+        }  else if (ID == 202) {
 
             // Проверяем первую фигуру и на ее основе формируем вторую
             if (firstFigure.getColor() == currParam) {
@@ -241,7 +226,7 @@ public class SecondTour extends Application {
             }
 
             // По аналогии формируем третью фигуру
-            if (secondFigure.getSize() == currParam) {
+            if (secondFigure.getColor() == currParam) {
                 thirdFigure = Game.figures_only_circles.get(rand.nextInt(0, Game.figures_only_circles.size()));
             } else {
                 thirdFigure = Game.figures_only_squares.get(rand.nextInt(0, Game.figures_only_squares.size()));
@@ -257,7 +242,7 @@ public class SecondTour extends Application {
             }
 
             // По аналогии формируем третью фигуру
-            if (secondFigure.getSize() == currParam) {
+            if (secondFigure.getType() == currParam) {
                 thirdFigure = Game.figures_only_blue.get(rand.nextInt(0, Game.figures_only_blue.size()));
             } else {
                 thirdFigure = Game.figures_only_yellow.get(rand.nextInt(0, Game.figures_only_yellow.size()));
@@ -370,22 +355,32 @@ public class SecondTour extends Application {
         System.out.println("Curr param: " + main_param);
 
         getCondition(chosenFigure);
+        System.out.println("Condition: "+ condition);
 
         // 2-Й ТУР //
+        Figure last_elem = threes.get(threes.size() - 1);
+
         // Условие, что правильно выбрали, когда Биг = Блу или SMALL = BLUE
         boolean conditionSecondRound_BigBlue =
-                condition == Color.BLUE && threes.get(threes.size() - 1).getSize() == main_param
+                condition == Color.BLUE && last_elem.getSize() == main_param
                         // Проверяем, что выбрали BLUE, если последний элемент в списке - BIG
                         || // или
-                        condition == Color.YELLOW && threes.get(threes.size() - 1).getSize() != main_param;
+                        condition == Color.YELLOW && last_elem.getSize() != main_param;
         // Выбираем YELLOW, если последний элемент в списке - SMALL (то бишь, != currObj)
+
+        // Условие, что правильно выбрали, когда BLUE = CIRCLE или YELLOW = SQUARE
+        boolean conditionSecondRound_BlueCircle =
+                condition == Type.CIRCLE && last_elem.getColor() == main_param
+                ||
+                condition == Type.SQUARE && last_elem.getColor() != main_param;
+
 
 
 //        System.out.println("curr equality: " + (condition != main_param));
 //        System.out.println("curr cond: " + condition);
 //        System.out.println("CONDITIONS: 1ST = " + conditionFirstRoundNormal + " 2nd = " + conditionFirstRoundSpecial + " 3rd = " + conditionSecondRound_BigBlue);
 
-        if (conditionSecondRound_BigBlue) {
+        if (conditionSecondRound_BigBlue || conditionSecondRound_BlueCircle) {
             Notifications.create().title("Правильно").text("Вы заработали 2 очка!").showInformation();
             points += 2;
             threes.add(chosenFigure);

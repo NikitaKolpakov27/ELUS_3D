@@ -161,13 +161,15 @@ public class Game {
             case ID_SMALL_BLUE -> selectedParam = Size.SMALL;
 
             case ID_BLUE_CIRCLE -> {
-                int color = randomizer.nextInt(2);
 
-                if (color == 0) {
-                    selectedParam = Color.BLUE;
-                } else {
-                    selectedParam = Color.YELLOW;
-                }
+                selectedParam = Color.BLUE;
+//                int color = randomizer.nextInt(2);
+//
+//                if (color == 0) {
+//                    selectedParam = Color.BLUE;
+//                } else {
+//                    selectedParam = Color.YELLOW;
+//                }
             }
 
             case ID_SQUARE_BIG -> {
